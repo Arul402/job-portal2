@@ -6,6 +6,8 @@ import axios from 'axios';
 // import { toast } from 'react-toastify'; // Assuming you're using react-toastify for notifications
 import LandingPage from '../pages/landingpage';
 import config from '../../functions/config'; // Ensure this is correctly configured
+import { Bounce, toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Candidate() {
   const [jobDetails, setJobDetails] = useState([]);
@@ -120,53 +122,84 @@ function Candidate() {
   }, [token]);
 
 
+  // useEffect(() => {
+  //   if (jobDetails.length > 0 && profile) {
+  //     // Fetch the latest job based on the last entry in jobDetails
+  //     const latestJob = jobDetails[jobDetails.length - 1];
+  //     const {
+  //       ug_cgpa_min,
+  //       ug_cgpa_max,
+  //       tenth_percentage_min,
+  //       tenth_percentage_max,
+  //       twelfth_percentage_min,
+  //       twelfth_percentage_max,
+  //     } = latestJob;
+      
+  //     const userUGCGPA = parseFloat(profile.ug_cgpa);
+  //     const userTenthPercentage = parseFloat(profile.tenth_percentage);
+  //     const userTwelfthPercentage = parseFloat(profile.twelfth_percentage);
+  
+  //     const isEligible =
+  //       userUGCGPA >= ug_cgpa_min &&
+  //       userUGCGPA <= ug_cgpa_max &&
+  //       userTenthPercentage >= tenth_percentage_min &&
+  //       userTenthPercentage <= tenth_percentage_max &&
+  //       userTwelfthPercentage >= twelfth_percentage_min &&
+  //       userTwelfthPercentage <= twelfth_percentage_max;
+  
+  //     if (isEligible) {
+  //       setFilteredJobs([latestJob]); // Only setting the latest eligible job
+        
+  //       // Check notification status
+  //       const showNotification = localStorage.getItem("show_notification");
+  
+  //       if (showNotification === "true") {
+  //         // Show notification after a slight delay (2ms)
+  //         const timer = setTimeout(() => {
+  //           alert("New jobs have been posted!");
+  
+  //           // Clear the notification flag
+  //           localStorage.removeItem("show_notification");
+  //           sessionStorage.setItem("has_seen_badge", "false");
+  //         }, 2);
+  
+  //         // Clean up the timeout if the component unmounts
+  //         return () => clearTimeout(timer);
+  //       }
+  //     }
+  //   }
+  // }, [jobDetails, profile]);
+
+
   useEffect(() => {
     if (jobDetails.length > 0 && profile) {
       // Fetch the latest job based on the last entry in jobDetails
       const latestJob = jobDetails[jobDetails.length - 1];
-      const {
-        ug_cgpa_min,
-        ug_cgpa_max,
-        tenth_percentage_min,
-        tenth_percentage_max,
-        twelfth_percentage_min,
-        twelfth_percentage_max,
-      } = latestJob;
-      
-      const userUGCGPA = parseFloat(profile.ug_cgpa);
-      const userTenthPercentage = parseFloat(profile.tenth_percentage);
-      const userTwelfthPercentage = parseFloat(profile.twelfth_percentage);
   
-      const isEligible =
-        userUGCGPA >= ug_cgpa_min &&
-        userUGCGPA <= ug_cgpa_max &&
-        userTenthPercentage >= tenth_percentage_min &&
-        userTenthPercentage <= tenth_percentage_max &&
-        userTwelfthPercentage >= twelfth_percentage_min &&
-        userTwelfthPercentage <= twelfth_percentage_max;
+      // Set the filtered job to the latest job without eligibility criteria
+      setFilteredJobs([latestJob]);
   
-      if (isEligible) {
-        setFilteredJobs([latestJob]); // Only setting the latest eligible job
-        
-        // Check notification status
-        const showNotification = localStorage.getItem("show_notification");
+      // Check notification status
+      const showNotification = localStorage.getItem("show_notification");
   
-        if (showNotification === "true") {
-          // Show notification after a slight delay (2ms)
-          const timer = setTimeout(() => {
-            alert("New jobs have been posted!");
+      if (showNotification === "true") {
+        // Show notification after a slight delay (2ms)
+        const timer = setTimeout(() => {
+          // alert("New jobs have been posted!");
+          toast.info("New jobs have been posted!");
   
-            // Clear the notification flag
-            localStorage.removeItem("show_notification");
-            sessionStorage.setItem("has_seen_badge", "false");
-          }, 2);
+          // Clear the notification flag
+          localStorage.removeItem("show_notification");
+          sessionStorage.setItem("has_seen_badge", "false");
+        }, 2);
   
-          // Clean up the timeout if the component unmounts
-          return () => clearTimeout(timer);
-        }
+        // Clean up the timeout if the component unmounts
+        return () => clearTimeout(timer);
       }
     }
   }, [jobDetails, profile]);
+  
+
 
   const notifyUser = () => {
     // Your notification logic (toast, alert, etc.)
@@ -178,6 +211,10 @@ function Candidate() {
 
   return (
     <>
+    <ToastContainer 
+      theme="dark"
+      transition={Bounce}
+      />
       <LandingPage type={"Candidate"} />
     </>
   );

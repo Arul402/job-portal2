@@ -452,7 +452,8 @@ const PostJob = () => {
     setSkills(updatedSkills);
   };
 
-  const addSkill = () => {
+  const addSkill = (e) => { 
+    e.preventDefault();
     setSkills([...skills, ""]);
   };
 
@@ -518,6 +519,8 @@ const PostJob = () => {
 
       if (response.status === 201) {
         setSubmissionStatus("Job posted successfully.");
+        localStorage.setItem('job_posted', new Date().toISOString());
+        localStorage.setItem('show_notification', 'true');
         navigate('/recruiter');
       } else {
         setSubmissionStatus("Failed to post job. Please try again.");
@@ -536,6 +539,9 @@ const PostJob = () => {
   const toggleAdditionalDetailsDrawer = () => {
     setIsAdditionalDetailsDrawerOpen(!isAdditionalDetailsDrawerOpen);
   };
+  if (loading) {
+    return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
+  }
    
 
   return (
@@ -595,7 +601,7 @@ const PostJob = () => {
                 <p>No skills added yet. Click '+ Add Skill' to start adding skills.</p>
               )}
 
-              <Button onClick={addSkill} className="w-full mt-4">+ Add Skill</Button>
+              <Button onClick={(e) =>addSkill(e)} className="w-full mt-4">+ Add Skill</Button>
             </div>
             <Button type="button" onClick={toggleAdditionalDetailsDrawer} className="w-full">
               Additional Details
