@@ -254,7 +254,7 @@ const Edit = () => {
           setLocation(data.location);
           setSalary(data.salary);
           setEmploymentType(data.employment_type);
-          setSkills(data.skills || "");
+          setSkills(data.skills ? data.skills.join(", ") : "");
           setAdditionalDetails(data.additional_details || "");
         } catch (err) {
           console.error('Error fetching job details:', err);
@@ -278,7 +278,7 @@ const Edit = () => {
         location,
         salary: parseFloat(salary),
         employment_type: employmentType,
-        skills,
+        skills:JSON.stringify(skills.split(",").map(skill => skill.trim())),
         additional_details: additionalDetails,
       };
 
