@@ -24,6 +24,7 @@ function Header() {
   const navigate = useNavigate();
   const { toast } = useToast();
   const userToken = sessionStorage.getItem('user_token');
+  const userType = sessionStorage.getItem('user_type');
   // Check for user token and profile photo on component mount
   useEffect(() => {
     
@@ -38,6 +39,15 @@ function Header() {
       }
     }
   }, [userToken]);
+  let redirectPath = '/';
+  if (userType === 'candidate') {
+    redirectPath = '/candidate';
+  } else if (userType === 'company') {
+    redirectPath = '/recruiter';
+  }else{
+    redirectPath = '/';
+  }
+
 
   // Toggle PopOver on avatar click
   const handleAvatarClick = () => {
@@ -50,7 +60,7 @@ function Header() {
 
   return (
     <nav className="py-4 flex justify-between items-center">
-      <Link to="">
+      <Link  to={redirectPath}>
         <img src={JobsiteLogo} className="h-14 md:h-12 sm:h-10 xs:h-8" alt="Hirrd Logo" />
       </Link>
 

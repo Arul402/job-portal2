@@ -37,3 +37,6 @@ body::-webkit-scrollbar {
 }
 
 
+.sheet-close-button {
+  display: none !important;
+}
