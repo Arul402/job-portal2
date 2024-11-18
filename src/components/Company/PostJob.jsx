@@ -845,7 +845,10 @@ const PostJob = () => {
             <Textarea placeholder="Job Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
             <Input placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} required />
             <Input type="number" placeholder="Salary" value={salary} onChange={(e) => setSalary(e.target.value)} required />
+            <div className="p-4 border-2">
+            <h3>Company Logo</h3><br/>
             <Input type="file" accept="image/*" onChange={handleFileChange} className="w-full p-2" />
+            </div>
             <Select onValueChange={setEmploymentType} value={employmentType} required>
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="Select Employment Type" />
