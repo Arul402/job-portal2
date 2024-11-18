@@ -1,20 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
-import axios from 'axios';
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from "../components/ui/Drawer";
 import { useToast } from "../components/ui/use-toast"; // Import the useToast hook
 import PopOver from './User/PopOver';
-import config from '../functions/config';
 import JobsiteLogo from '../assets/logo2.png'
 
 function Header() {

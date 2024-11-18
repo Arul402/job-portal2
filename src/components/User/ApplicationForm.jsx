@@ -107,67 +107,7 @@ const ApplicationForm = () => {
 
   return (
     <>
-    {/* <Drawer open={isOpen} onOpenChange={handleDrawerClose}>
-      <DrawerContent className="h-full overflow-hidden">
-        <DrawerHeader>
-          <DrawerTitle>Application Form</DrawerTitle>
-        </DrawerHeader>
-        
-        <ScrollArea className="h-[calc(100vh-150px)] overflow-y-auto">
-          <form className="flex flex-col p-4 space-y-4" onSubmit={handleSubmit}>
-            <label htmlFor="resume">Resume</label>
-            <Input type="file" id="resume" onChange={(e) => setResume(e.target.files[0])} required />
-            {profile.resume && (
-              <a href={`${config.base_url}${profile.resume}`} target="_blank" rel="noopener noreferrer">
-                View Resume
-              </a>
-            )}
-            
-            <label htmlFor="coverLetter">Cover Letter</label>
-            <Textarea
-              id="coverLetter"
-              value={coverLetter}
-              onChange={(e) => setCoverLetter(e.target.value)}
-              placeholder="Cover Letter"
-            />
-            
-            <label htmlFor="skills">Skills</label>
-            <Textarea
-              id="skills"
-              value={profile.skills}
-              onChange={(e) => setProfile({ ...profile, skills: e.target.value })}
-              placeholder="Skills"
-            />
-            
-            <label htmlFor="experience">Experience</label>
-            <Textarea
-              id="experience"
-              value={profile.experience}
-              onChange={(e) => setProfile({ ...profile, experience: e.target.value })}
-              placeholder="Experience"
-            />
-
-            <label htmlFor="education">Education</label>
-            <Textarea
-              id="education"
-              value={profile.education}
-              onChange={(e) => setProfile({ ...profile, education: e.target.value })}
-              placeholder="Education"
-            />
-            
-            <Button type="submit" className="mt-4">
-              Apply
-            </Button>
-          </form>
-        </ScrollArea>
-        
-        <DrawerFooter>
-          <Button variant="outline" onClick={() => setIsOpen(false)}>
-            Cancel
-          </Button>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer> */}
+    
     
 <Sheet open={isOpen} >
   <SheetContent side="bottom" className="p-7  fixed inset-x-0 bottom-0 z-50 mt-24 flex h-5/6 flex-col rounded-t-[10px] border bg-background max-w-[90%] sm:max-w-[500px] mx-auto">

@@ -153,20 +153,6 @@ const handleLocationFilterChange = (selectedLocation) => {
       </form>
 
       <div className="flex flex-col sm:flex-row gap-2">
-        {/* <Select value={location} onValueChange={setLocation}>
-          <SelectTrigger>
-            <SelectValue placeholder="Filter by Location" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectGroup>
-              {tamilNaduCities.map(({ name }) => (
-                <SelectItem key={name} value={name}>
-                  {name}
-                </SelectItem>
-              ))}
-            </SelectGroup>
-          </SelectContent>
-        </Select> */}
 
 <Select value={location} onValueChange={handleLocationFilterChange}>
   <SelectTrigger>

@@ -1,5 +1,3 @@
-// import React from 'react'
-
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { Button } from './ui/button';
@@ -69,12 +67,7 @@ function Login() {
   
           // Validate if the fields are filled
           if (username === "" || password === "") {
-            // showToast("Login failed", "Please fill in both email and password fields.")
-            // toast({
-            //   title: 'Login failed',
-            //   description: 'Please fill in both email and password fields.',
-            //   variant: 'destructive',
-            // });
+            
               toast.error("Please fill in both email and password fields.");
               return;
           }
@@ -109,8 +102,6 @@ function Login() {
                   }
                   setIsOpen(false)
               } else {
-                // showToast("Login failed", "Please try again.")
-                  // toast.error("Login failed. Please try again.");
 
               }
   
@@ -162,29 +153,14 @@ function Login() {
   
       // Validation logic
       if (!first_name || !last_name || !email || !phone_number || !place) {
-        // toast({
-        //   title: 'Error',
-        //   description: 'All fields must be filled.',
-        //   variant: 'destructive',
-        // });
         toast.error("All fields must be filled.");
         return;
       }
       if (!validateEmail(email)) {
-        // toast({
-        //   title: 'Error',
-        //   description: 'Invalid email format.',
-        //   variant: 'destructive',
-        // });
         toast.error("Invalid email format.");
         return;
       }
       if (!validatePhoneNumber(phone_number)) {
-        // toast({
-        //   title: 'Error',
-        //   description: 'Phone number must be 10 digits.',
-        //   variant: 'destructive',
-        // });
         toast.error("Phone number must be 10 digits.");
         return;
       }
@@ -200,20 +176,9 @@ function Login() {
         if (response.status === 200) {
           clearForm();
           sessionStorage.setItem('username', data.first_name);
-          // navigate('/login');
-          // toast({
-          //   title: 'Success',
-          //   description: 'User created successfully. Password sent to your email.',
-          //   variant: 'success',
-          // });
           toast("Password sent to your email.");
           setIsJobSeekerSignupOpen(false);
         } else {
-          // toast({
-          //   title: 'Error',
-          //   description: 'User creation failed. Try again.',
-          //   variant: 'destructive',
-          // });
           toast.error("User creation failed. Try again.");
         }
       } catch (error) {
@@ -318,16 +283,36 @@ function Login() {
       } else {
           toast.error("Network error. Please check your connection.");
       }
-        // toast({
-        //   title: 'Error',
-        //   description: 'Registration failed!',
-        //   variant: 'destructive',
-        // });
-        // if(st)
-        // toast.error("An unexpected error occurred.");
         console.error("Error during registration:", error);
       }
     }
+
+    const handleForgotPassword = async () => {
+      if (!username) {
+        alert("Please enter your email to proceed");
+        // setShowToast(true); // Show notification if email is empty
+      } else {
+        sessionStorage.setItem('email', username); // Store email in session storage
+    
+        try {
+          // Make the API request to reset the password
+          const response = await axios.post(`${config.base_url}/api/v1/app/password-reset/`, {
+            email: username, // Send the email to the backend
+          });
+    
+          if (response.status === 200) {
+            const { uid, token } = response.data; // Extract UID and token from the response
+            navigate(`/reset-password/${uid}/${token}`); // Navigate to the password reset page with UID and token
+          } else {
+            alert("Failed to generate password reset link. Please try again.");
+          }
+        } catch (error) {
+          alert("An error occurred while sending the reset link. Please try again.");
+          console.error(error);
+        }
+      }
+    };
+    
     function close(){
         navigate('/');
     }
@@ -335,11 +320,6 @@ function Login() {
       setIsOpen(isDrawerOpen);
       if (!isDrawerOpen) navigate("/"); // Navigate to /candidate if the drawer is closed
     };
-
-    // const showToast = (title, description, variant = 'default') => {
-    //   toast({ title, description, variant });
-    // };
-    
   return (
     // <div>Login</div>
     <>
@@ -350,7 +330,9 @@ function Login() {
     />
     <LandingPage/>
 
-<Drawer open={isOpen} onOpenChange={handleDrawerClose}>
+<Drawer open={isOpen} 
+// onOpenChange={handleDrawerClose}
+>
         <DrawerContent>
           <DrawerHeader>
             <DrawerTitle>Login</DrawerTitle>
@@ -372,22 +354,6 @@ function Login() {
 
             <p className="mt-2">
               Don't have an Account? 
-              {/* <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-                <AlertDialogTrigger className="text-blue-500" onClick={handleSignUpClick}>Sign Up</AlertDialogTrigger><br/><br/>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Select Your Role</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      Please select whether you are a Jobseeker or Jobprovider.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel onClick={() => setIsDialogOpen(false)}>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => handleUserTypeSelect("Jobseeker")}>Jobseeker</AlertDialogAction>
-                    <AlertDialogAction onClick={() => handleUserTypeSelect("Jobprovider")}>Jobprovider</AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog> */}
 
 <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
   <AlertDialogTrigger className="text-blue-500" onClick={handleSignUpClick}>Sign Up</AlertDialogTrigger><br/><br/>
@@ -427,6 +393,7 @@ function Login() {
             <Button type="submit" 
             onClick= {(e)=>{e.preventDefault();handleSubmit();}  }
             >Login</Button>
+            
           </form>
 
           <DrawerFooter>
@@ -434,6 +401,10 @@ function Login() {
             onClick= {(e)=>{e.preventDefault();handleSubmit();}  }
             >Login</Button> */}
             <DrawerClose  close={isClose}  >
+            <Button type="submit" 
+            // onClick= {(e)=>{e.preventDefault();}  }
+            onClick={handleForgotPassword}
+            >Forgot Password</Button><br/><br/>
                 
               <Button variant="outline" onClick={close}>Cancel</Button>
               {/* {Button.clicked===true ? close():navigate('/')} */}

@@ -1,6 +1,3 @@
-
-
-
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import { toast } from 'react-toastify'; // Assuming you're using react-toastify for notifications
@@ -66,40 +63,6 @@ function Candidate() {
     fetchJobDetails();
   }, [newJobAlert, lastNotified]);
 
-  // Check if the job posting notification flag is set
-  // useEffect(() => {
-  //   const showNotification = localStorage.getItem("show_notification");
-
-  //   if (showNotification === "true") {
-  //     // Show notification
-  //     // alert("New jobs have been posted!");
-
-  //     // Clear the notification flag so it doesn't show again
-  //     localStorage.removeItem("show_notification");
-  //     // sessionStorage.setItem("has_seen_badge","false")
-  //   }
-  // }, []);
-
-  // useEffect(() => {
-  //   const showNotification = localStorage.getItem("show_notification");
-  
-  //   if (showNotification === "true") {
-  //     // Set a 2ms delay before showing the notification
-  //     const timer = setTimeout(() => {
-  //       // Show notification
-  //       alert("New jobs have been posted!");
-  
-  //       // Clear the notification flag so it doesn't show again
-  //       localStorage.removeItem("show_notification");
-  //       sessionStorage.setItem("has_seen_badge", "false");
-  //     }, 2);
-  
-  //     // Clear the timeout if the component unmounts to prevent memory leaks
-  //     return () => clearTimeout(timer);
-  //   }
-  // }, []);
-
-
   useEffect(() => {
     const fetchProfile = async () => {
       if (token) {
@@ -120,56 +83,6 @@ function Candidate() {
     };
     fetchProfile();
   }, [token]);
-
-
-  // useEffect(() => {
-  //   if (jobDetails.length > 0 && profile) {
-  //     // Fetch the latest job based on the last entry in jobDetails
-  //     const latestJob = jobDetails[jobDetails.length - 1];
-  //     const {
-  //       ug_cgpa_min,
-  //       ug_cgpa_max,
-  //       tenth_percentage_min,
-  //       tenth_percentage_max,
-  //       twelfth_percentage_min,
-  //       twelfth_percentage_max,
-  //     } = latestJob;
-      
-  //     const userUGCGPA = parseFloat(profile.ug_cgpa);
-  //     const userTenthPercentage = parseFloat(profile.tenth_percentage);
-  //     const userTwelfthPercentage = parseFloat(profile.twelfth_percentage);
-  
-  //     const isEligible =
-  //       userUGCGPA >= ug_cgpa_min &&
-  //       userUGCGPA <= ug_cgpa_max &&
-  //       userTenthPercentage >= tenth_percentage_min &&
-  //       userTenthPercentage <= tenth_percentage_max &&
-  //       userTwelfthPercentage >= twelfth_percentage_min &&
-  //       userTwelfthPercentage <= twelfth_percentage_max;
-  
-  //     if (isEligible) {
-  //       setFilteredJobs([latestJob]); // Only setting the latest eligible job
-        
-  //       // Check notification status
-  //       const showNotification = localStorage.getItem("show_notification");
-  
-  //       if (showNotification === "true") {
-  //         // Show notification after a slight delay (2ms)
-  //         const timer = setTimeout(() => {
-  //           alert("New jobs have been posted!");
-  
-  //           // Clear the notification flag
-  //           localStorage.removeItem("show_notification");
-  //           sessionStorage.setItem("has_seen_badge", "false");
-  //         }, 2);
-  
-  //         // Clean up the timeout if the component unmounts
-  //         return () => clearTimeout(timer);
-  //       }
-  //     }
-  //   }
-  // }, [jobDetails, profile]);
-
 
   useEffect(() => {
     if (jobDetails.length > 0 && profile) {

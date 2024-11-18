@@ -95,22 +95,7 @@ const Onboarding = () => {
         I am a...
       </h2>
       <div className="mt-16 flex flex-wrap justify-evenly flex-shrink-0 grid-cols-2 gap-4 w-full md:px-40">
-        {/* <Button
-          variant="blue"
-          className="h-24 w-52 text-2xl"
-          onClick={() => handleRoleSelection("candidate")}
-          disabled={isCompanyEmployee} // Disable if the user is a recruiter
-        >
-          Candidate
-        </Button>
-        <Button
-          variant="destructive"
-          className="h-24 w-52 text-2xl"
-          onClick={() => handleRoleSelection("recruiter")}
-          disabled={!isCompanyEmployee} // Disable if the user is a candidate
-        >
-          Recruiter
-        </Button> */}
+        
 
 
 

@@ -92,43 +92,7 @@ const JobPage = () => {
       return;
     }
   
-    // if (!profile) {
-    //   alert("Profile data is not available.");
-    //   return;
-    // }
-  
-    // Check if user has academic details
-    // const { ug_cgpa, tenth_percentage, twelfth_percentage } = profile;
-    // if (!ug_cgpa || !tenth_percentage || !twelfth_percentage) {
-    //   alert("Please complete your academic details in the profile section before applying.");
-    //   return;
-    // }
-  
     try {
-    //   const {
-    //     ug_cgpa_min,
-    //     ug_cgpa_max,
-    //     tenth_percentage_min,
-    //     tenth_percentage_max,
-    //     twelfth_percentage_min,
-    //     twelfth_percentage_max,
-    //   } = job;
-  
-    //   const userUGCGPA = parseFloat(profile.ug_cgpa);
-    //   const userTenthPercentage = parseFloat(profile.tenth_percentage);
-    //   const userTwelfthPercentage = parseFloat(profile.twelfth_percentage);
-  
-    //   // Eligibility check
-    //   if (
-    //     !(userUGCGPA >= ug_cgpa_min && userUGCGPA <= ug_cgpa_max) ||
-    //     !(userTenthPercentage >= tenth_percentage_min &&
-    //       userTenthPercentage <= tenth_percentage_max) ||
-    //     !(userTwelfthPercentage >= twelfth_percentage_min &&
-    //       userTwelfthPercentage <= twelfth_percentage_max)
-    //   ) {
-    //     alert("Your academic qualifications does not meet the eligibility criteria for this job.");
-    //     return;
-    //   }
   
       navigate(`/application-form/${id}`);
     } catch (error) {
@@ -151,34 +115,6 @@ const JobPage = () => {
         });
         setJob(response.data);
         
-        // Check eligibility right after fetching job details
-        // if (profile) {
-        //   const {
-        //     ug_cgpa_min,
-        //     ug_cgpa_max,
-        //     tenth_percentage_min,
-        //     tenth_percentage_max,
-        //     twelfth_percentage_min,
-        //     twelfth_percentage_max,
-        //   } = response.data;
-  
-        //   const userUGCGPA = parseFloat(profile.ug_cgpa);
-        //   const userTenthPercentage = parseFloat(profile.tenth_percentage);
-        //   const userTwelfthPercentage = parseFloat(profile.twelfth_percentage);
-  
-        //   if (
-        //     !(userUGCGPA >= ug_cgpa_min && userUGCGPA <= ug_cgpa_max) ||
-        //     !(userTenthPercentage >= tenth_percentage_min &&
-        //       userTenthPercentage <= tenth_percentage_max) ||
-        //     !(userTwelfthPercentage >= twelfth_percentage_min &&
-        //       userTwelfthPercentage <= twelfth_percentage_max)
-        //   ) {
-        //     setEligible(true);
-        //   } else {
-        //     // setEligible(false);
-        //     // alert("Your academic qualifications do not meet the eligibility criteria for this job.");
-        //   }
-        // }
         
       } catch (err) {
         setError("Error fetching job details");
@@ -187,7 +123,7 @@ const JobPage = () => {
       }
     };
     fetchJobDetails();
-  }, [id, token, profile]); // Include profile in dependencies to check eligibility when it updates
+  }, [id, token, profile]); 
   
   
 
@@ -208,21 +144,10 @@ const JobPage = () => {
           <MapPinIcon /> {job?.location}
         </div>
         <div className="flex gap-2">
-          <Briefcase /> 
-          {/* {job?.applications?.length} */}
-           {/* Applicants */}
+          <Briefcase />
            {job.employment_type}
         </div>
         <div className="flex gap-2 text-yellow-200">
-          {/* {job?.isOpen ? (
-            <>
-              <DoorOpen /> Open
-            </>
-          ) : (
-            <>
-              <DoorClosed /> Closed
-            </>
-          )} */}
           <IndianRupee />
           {job.salary}
         </div>
