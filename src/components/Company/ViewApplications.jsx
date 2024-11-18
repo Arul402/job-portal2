@@ -249,6 +249,17 @@ import {
   CardTitle,
 } from "../ui/card";
 import { BarLoader } from 'react-spinners';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -264,6 +275,8 @@ const ViewApplications = () => {
   const [newApplicationNotified, setNewApplicationNotified] = useState(false);
   const navigate = useNavigate();
   const token = sessionStorage.getItem('user_token');
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -421,7 +434,9 @@ const ViewApplications = () => {
           app.id === applicationId ? { ...app, status } : app
         )
       );
-      toast.success('Application status updated successfully');
+      // toast.success('Application status updated successfully');
+      setAlertMessage("Application status updated successfully");
+      setAlertOpen(true);
     } catch (err) {
       console.error("Error updating application status:", err);
       toast.error('Error updating application status');
@@ -429,7 +444,9 @@ const ViewApplications = () => {
       setLoading(false);
     }
   };
-
+  if (loading) {
+    return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
+  }
   return (
     <>
       <ToastContainer 
@@ -440,9 +457,7 @@ const ViewApplications = () => {
         View Applications
       </h1>
       <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {loading ? (
-          <BarLoader width="100%" color="#36d7b7" />
-        ) : applications.length === 0 ? (
+        {applications.length === 0 ? (
           <div>No applications found.</div>
         ) : (
           applications.map((application, index) => (
@@ -490,6 +505,22 @@ const ViewApplications = () => {
         )}
         {error && <div className="error-message">{error}</div>}
       </div>
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notification</AlertDialogTitle>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline">Close</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={() => setAlertOpen(false)}>Got it</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };

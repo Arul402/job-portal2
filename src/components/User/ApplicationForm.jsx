@@ -7,6 +7,18 @@ import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area"; 
 import { Textarea } from "../ui/textarea"; 
 import { BarLoader } from "react-spinners";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "../ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 import config from "../../functions/config";
 
 const ApplicationForm = () => {
@@ -19,6 +31,8 @@ const ApplicationForm = () => {
     education: "",
   });
   const [resume, setResume] = useState(null);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const [coverLetter, setCoverLetter] = useState("");
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const [isOpen, setIsOpen] = useState(true);
@@ -67,6 +81,8 @@ const ApplicationForm = () => {
       setSubmissionStatus("Application submitted successfully!");
       setIsOpen(false);
       alert("Application Submitted successfully!");
+      // setAlertMessage("Application Submitted successfully!");
+      // setAlertOpen(true);
       navigate("/applied-jobs")
     } catch (error) {
       console.error("Error submitting application:", error);
@@ -80,13 +96,18 @@ const ApplicationForm = () => {
     setIsOpen(isDrawerOpen);
     if (!isDrawerOpen) navigate(`/job/${id}`); // Navigate to /candidate if the drawer is closed
   };
+  const Close = () => {
+    setIsOpen(false)
+    navigate(`/job/${id}`);
+  };
 
   if (loading) {
     return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
   }
 
   return (
-    <Drawer open={isOpen} onOpenChange={handleDrawerClose}>
+    <>
+    {/* <Drawer open={isOpen} onOpenChange={handleDrawerClose}>
       <DrawerContent className="h-full overflow-hidden">
         <DrawerHeader>
           <DrawerTitle>Application Form</DrawerTitle>
@@ -146,7 +167,87 @@ const ApplicationForm = () => {
           </Button>
         </DrawerFooter>
       </DrawerContent>
-    </Drawer>
+    </Drawer> */}
+    
+<Sheet open={isOpen} >
+  <SheetContent side="bottom" className="p-7  fixed inset-x-0 bottom-0 z-50 mt-24 flex h-5/6 flex-col rounded-t-[10px] border bg-background max-w-[90%] sm:max-w-[500px] mx-auto">
+    <SheetHeader>
+      <SheetTitle>Application Form</SheetTitle>
+    </SheetHeader>
+
+    <ScrollArea className="h-[calc(85vh-100px)] overflow-y-auto">
+      <form className="flex flex-col p-4 space-y-4" >
+        <label htmlFor="resume">Resume</label>
+        <Input type="file" id="resume" onChange={(e) => setResume(e.target.files[0])} required />
+        {profile.resume && (
+          <a href={`${config.base_url}${profile.resume}`} target="_blank" rel="noopener noreferrer">
+            View Resume
+          </a>
+        )}
+
+        <label htmlFor="coverLetter">Cover Letter</label>
+        <Textarea
+          id="coverLetter"
+          value={coverLetter}
+          onChange={(e) => setCoverLetter(e.target.value)}
+          placeholder="Cover Letter"
+        />
+
+        <label htmlFor="skills">Skills</label>
+        <Textarea
+          id="skills"
+          value={profile.skills}
+          onChange={(e) => setProfile({ ...profile, skills: e.target.value })}
+          placeholder="Skills"
+        />
+
+        <label htmlFor="experience">Experience</label>
+        <Textarea
+          id="experience"
+          value={profile.experience}
+          onChange={(e) => setProfile({ ...profile, experience: e.target.value })}
+          placeholder="Experience"
+        />
+
+        <label htmlFor="education">Education</label>
+        <Textarea
+          id="education"
+          value={profile.education}
+          onChange={(e) => setProfile({ ...profile, education: e.target.value })}
+          placeholder="Education"
+        />
+
+        
+      </form>
+    </ScrollArea>
+
+    <SheetFooter>
+    <Button type="submit" onClick={handleSubmit} className="w-full ">
+          Apply
+        </Button>
+      <Button variant="outline" onClick={Close}>
+        Cancel
+      </Button>
+    </SheetFooter>
+  </SheetContent>
+</Sheet>
+    <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notification</AlertDialogTitle>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline">Close</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={() => setAlertOpen(false)}>Got it</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 };
 

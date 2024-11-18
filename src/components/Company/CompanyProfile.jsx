@@ -15,6 +15,17 @@ import {
   SheetHeader,
   SheetTitle,
 } from "../ui/sheet";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 import { FaBuilding, FaLock } from "react-icons/fa";
 import BuildingImage from '../../assets/building.png'
 import LockImage from '../../assets/lock.png'
@@ -37,6 +48,8 @@ const CompanyProfile = () => {
   const token = sessionStorage.getItem("user_token");
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   const handleOpenSheet = (sheetName) => setOpenSheet(sheetName);
   const handleCloseSheet = () => setOpenSheet(null);
@@ -83,7 +96,9 @@ const CompanyProfile = () => {
           'Authorization': `Token ${token}`,
         },
       });
-      alert("Company profile updated successfully!");
+      setAlertMessage("Company profile updated successfully!");
+      setAlertOpen(true);
+      // alert("Company profile updated successfully!");
       setChanges({});
       handleCloseSheet();
       fetchProfile();
@@ -325,6 +340,23 @@ const CompanyProfile = () => {
     </ScrollArea>
   </SheetContent>
 </Sheet>
+
+<AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notification</AlertDialogTitle>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline">Close</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={() => setAlertOpen(false)}>Got it</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
 
     </div>
   );
