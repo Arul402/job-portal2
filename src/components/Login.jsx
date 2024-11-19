@@ -287,31 +287,31 @@ function Login() {
       }
     }
 
-    const handleForgotPassword = async () => {
-      if (!username) {
-        alert("Please enter your email to proceed");
-        // setShowToast(true); // Show notification if email is empty
-      } else {
-        sessionStorage.setItem('email', username); // Store email in session storage
+    // const handleForgotPassword = async () => {
+    //   if (!username) {
+    //     alert("Please enter your email to proceed");
+    //     // setShowToast(true); // Show notification if email is empty
+    //   } else {
+    //     sessionStorage.setItem('email', username); // Store email in session storage
     
-        try {
-          // Make the API request to reset the password
-          const response = await axios.post(`${config.base_url}/api/v1/app/password-reset/`, {
-            email: username, // Send the email to the backend
-          });
+    //     try {
+    //       // Make the API request to reset the password
+    //       const response = await axios.post(`${config.base_url}/api/v1/app/password-reset/`, {
+    //         email: username, // Send the email to the backend
+    //       });
     
-          if (response.status === 200) {
-            const { uid, token } = response.data; // Extract UID and token from the response
-            navigate(`/reset-password/${uid}/${token}`); // Navigate to the password reset page with UID and token
-          } else {
-            alert("Failed to generate password reset link. Please try again.");
-          }
-        } catch (error) {
-          alert("An error occurred while sending the reset link. Please try again.");
-          console.error(error);
-        }
-      }
-    };
+    //       if (response.status === 200) {
+    //         const { uid, token } = response.data; // Extract UID and token from the response
+    //         navigate(`/reset-password/${uid}/${token}`); // Navigate to the password reset page with UID and token
+    //       } else {
+    //         alert("Failed to generate password reset link. Please try again.");
+    //       }
+    //     } catch (error) {
+    //       alert("An error occurred while sending the reset link. Please try again.");
+    //       console.error(error);
+    //     }
+    //   }
+    // };
     
     function close(){
         navigate('/');
@@ -352,11 +352,11 @@ function Login() {
              className="mb-3 mt-2"
               required  />
 
-            <p className="mt-2">
+            {/* <p className="mt-2">
               Don't have an Account? 
 
 <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-  <AlertDialogTrigger className="text-blue-500" onClick={handleSignUpClick}>Sign Up</AlertDialogTrigger><br/><br/>
+  <AlertDialogTrigger className="text-blue-500" onClick={handleSignUpClick}>Sign Up</AlertDialogTrigger>
   <AlertDialogContent 
     className="p-6 rounded-lg shadow-md w-full max-w-xs sm:max-w-md mx-auto"
     style={{
@@ -387,8 +387,53 @@ function Login() {
   </AlertDialogContent>
 </AlertDialog>
 
+            <h3 className="text-blue-500 relative left-80 bottom-5">Forgot Password</h3>
 
-            </p>
+            </p> */}
+
+
+<p className="mt-2 mb-5 flex items-center justify-between">
+  <span>
+    Don't have an Account? 
+    <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+      <AlertDialogTrigger className="text-blue-500 ml-1" onClick={handleSignUpClick}>Sign Up</AlertDialogTrigger>
+      <AlertDialogContent 
+        className="p-6 rounded-lg shadow-md w-full max-w-xs sm:max-w-md mx-auto"
+        style={{
+          margin: "0 auto", // Centers the dialog
+        }}
+      >
+        <AlertDialogHeader>
+          <AlertDialogTitle>Select Your Role</AlertDialogTitle>
+          <AlertDialogDescription>
+            Please select whether you are a Jobseeker or Jobprovider.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter className="flex flex-col gap-2 sm:flex-row">
+          <AlertDialogAction onClick={() => handleUserTypeSelect("Jobseeker")} className="w-full sm:w-auto">
+            Jobseeker
+          </AlertDialogAction>
+          <AlertDialogAction onClick={() => handleUserTypeSelect("Jobprovider")} className="w-full sm:w-auto">
+            Jobprovider
+          </AlertDialogAction>
+          <AlertDialogCancel onClick={() => setIsDialogOpen(false)} className="w-full sm:w-auto">
+            Cancel
+          </AlertDialogCancel>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  </span>
+  <Link 
+    to="/forgotpassword"
+    className="text-blue-500"
+    style={{
+      textDecoration: "none", // Removes underline for a cleaner look
+    }}
+  >
+    Forgot Password
+  </Link>
+</p><br/><br/>
+
             
             <Button type="submit" 
             onClick= {(e)=>{e.preventDefault();handleSubmit();}  }
@@ -401,12 +446,12 @@ function Login() {
             onClick= {(e)=>{e.preventDefault();handleSubmit();}  }
             >Login</Button> */}
             <DrawerClose  close={isClose}  >
-            <Button type="submit" 
+            {/* <Button type="submit" 
             // onClick= {(e)=>{e.preventDefault();}  }
             onClick={handleForgotPassword}
-            >Forgot Password</Button><br/><br/>
+            >Forgot Password</Button><br/><br/> */}
                 
-              <Button variant="outline" onClick={close}>Cancel</Button>
+              <Button variant="outline" className="w-full" onClick={close}>Cancel</Button>
               {/* {Button.clicked===true ? close():navigate('/')} */}
               {/* <Navigate to={'/'} /> */}
             </DrawerClose>

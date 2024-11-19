@@ -103,7 +103,7 @@ function ForgotPassword() {
   };
   const Close = () => {
     setIsOpen(false)
-    navigate('/login');
+    navigate('/forgotpassword');
   };
 
   const handleDrawerClose = (isDrawerOpen) => {

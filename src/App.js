@@ -33,6 +33,7 @@ import ChangeCompanyPassword from './components/Company/ChangeCompanyPassword';
 import EligibleJobs from './components/User/EligibleJobs';
 import SavedJobs from './components/User/SavedJobs';
 import ForgotPassword from './components/ForgotPassword';
+import ForgotPass2 from './components/ForgotPass2';
 
 
 const router=createBrowserRouter([
@@ -127,6 +128,10 @@ const router=createBrowserRouter([
       {
         path:'/reset-password/:uidb64/:token',
         element:<ForgotPassword/>
+      },
+      {
+        path:'/forgotpassword',
+        element:<ForgotPass2/>
       },
       // {
       //   path:'/my-job',
