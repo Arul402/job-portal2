@@ -205,6 +205,25 @@ const UserProfile = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+      const showNotification = localStorage.getItem("show_notification");
+  
+      if (showNotification === "true") {
+        // Show notification after a slight delay (2ms)
+        const timer = setTimeout(() => {
+          // alert("New jobs have been posted!");
+          // toast.info("New jobs have been posted!");
+          setAlertMessage("New jobs have been posted!");
+      setAlertOpen(true);
+  
+          // Clear the notification flag
+          localStorage.removeItem("show_notification");
+          sessionStorage.setItem("has_seen_badge", "false");
+        }, 2);
+        return () => clearTimeout(timer);
+    }
+  }, [token]);
   
   
 

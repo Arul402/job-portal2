@@ -5,6 +5,19 @@ import LandingPage from '../pages/landingpage';
 import config from '../../functions/config'; // Ensure this is correctly configured
 import { Bounce, toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { BarLoader } from 'react-spinners';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
+import { Button } from '../ui/button';
 
 function Candidate() {
   const [jobDetails, setJobDetails] = useState([]);
@@ -14,6 +27,8 @@ function Candidate() {
   const [newJobAlert, setNewJobAlert] = useState(false);
   const lastNotified = localStorage.getItem("last_notified");
   const [profile, setProfile] = useState(null);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const token = sessionStorage.getItem("user_token");
 
   // Notify user if new jobs are found
@@ -99,7 +114,9 @@ function Candidate() {
         // Show notification after a slight delay (2ms)
         const timer = setTimeout(() => {
           // alert("New jobs have been posted!");
-          toast.info("New jobs have been posted!");
+          setAlertMessage("New jobs have been posted!");
+      setAlertOpen(true);
+          // toast.info("New jobs have been posted!");
   
           // Clear the notification flag
           localStorage.removeItem("show_notification");
@@ -116,10 +133,10 @@ function Candidate() {
 
   const notifyUser = () => {
     // Your notification logic (toast, alert, etc.)
-    alert("New jobs have been posted!");
+    // alert("New jobs have been posted!");
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
   if (error) return <div>{error}</div>;
 
   return (
@@ -129,6 +146,22 @@ function Candidate() {
       transition={Bounce}
       />
       <LandingPage type={"Candidate"} />
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notification</AlertDialogTitle>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline">Close</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={() => setAlertOpen(false)}>Got it</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 }

@@ -47,9 +47,20 @@ function ForgotPass2() {
         // alert("Failed to generate password reset link. Please try again.");
       }
     } catch (error) {
+        if (error.response) {
+            const { status, data } = error.response;
+            if (status === 402) {
+
+            //   toast.error("No user found with this email.");
+              alert("No user found with this email.")
+        //   setAlertOpen(true);
+                // toast.error(data.error || "The old password is incorrect.");
+            }else{
         toast.error("An error occurred while sending the reset link. Please try again.")
     //   alert("An error occurred while sending the reset link. Please try again.");
       console.error(error);
+            }
+        }
     } finally {
       setLoading(false); // Stop loader
     }

@@ -32,6 +32,7 @@ import config from '../functions/config';
 import LandingPage from './pages/landingpage';
 import { ScrollArea } from './ui/scroll-area';
 import { ToastProvider } from './ui/toast';
+import { BarLoader } from 'react-spinners';
 // import config from '@/functions/config';
 
 function Login() {
@@ -40,12 +41,14 @@ function Login() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [isJobSeekerSignupOpen, setIsJobSeekerSignupOpen] = useState(false);
     const [isJobProviderSignupOpen, setIsJobProviderSignupOpen] = useState(false);
-  
+    const [loading, setLoading] = useState(false);
     const [first_name, setFirstname] = useState('');
     const [last_name, setLastname] = useState('');
     const [email, setEmail] = useState('');
     const [phone_number, setPhoneNumber] = useState('');
     const [place, setPlace] = useState('');
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [alertMessage, setAlertMessage] = useState('');
   //   const [loading, setLoading] = useState(false);
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     // const phoneRegex = /^\d{10,15}$/;
@@ -71,7 +74,7 @@ function Login() {
               toast.error("Please fill in both email and password fields.");
               return;
           }
-          // setLoading(true);
+          setLoading(true);
   
           try {
               const response = await axios.post(`${config.base_url}/api/v1/auth/login/`, data, {
@@ -111,7 +114,7 @@ function Login() {
               // toast.error("Invalid credentials. Please try again.");
           }finally {
               // Ensure loading state is set back to false after API call
-              // setLoading(false);
+              setLoading(false);
             }
       }
   
@@ -165,7 +168,7 @@ function Login() {
         return;
       }
   
-      // setLoading(true);
+      setLoading(true);
   
       try {
         const response = await axios.post(`${config.base_url}/api/v1/auth/create/`, data, {
@@ -176,7 +179,10 @@ function Login() {
         if (response.status === 200) {
           clearForm();
           sessionStorage.setItem('username', data.first_name);
-          toast("Password sent to your email.");
+          // toast("Password sent to your email.");
+          // alert("Password sent to your email.")
+          setAlertMessage("Password sent to your email.");
+          setAlertOpen(true);
           setIsJobSeekerSignupOpen(false);
         } else {
           toast.error("User creation failed. Try again.");
@@ -185,14 +191,22 @@ function Login() {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400) {
-              toast.error(data.error || "User with this email already exists.");
+            setAlertMessage("User with this email already exists.");
+            setAlertOpen(true);
+              // toast.error(data.error || "User with this email already exists.");
           } else if (status === 500) {
-              toast.error("Server error. Please try again later.");
+            setAlertMessage("Server error. Please try again later.");
+          setAlertOpen(true);
+              // toast.error("Server error. Please try again later.");
           } else {
-              toast.error("An unexpected error occurred.");
+            setAlertMessage("An unexpected error occurred.");
+          setAlertOpen(true);
+              // toast.error("An unexpected error occurred.");
           }
       } else {
-          toast.error("Network error. Please check your connection.");
+        setAlertMessage("Network error. Please check your connection.");
+          setAlertOpen(true);
+          // toast.error("Network error. Please check your connection.");
       }
         // toast({
         //   title: 'Error',
@@ -200,6 +214,8 @@ function Login() {
         //   variant: 'destructive',
         // });
         // toast.error("An unexpected error occurred.");
+      }finally {
+        setLoading(false);
       }
     }
   
@@ -242,7 +258,7 @@ function Login() {
         phone_number: phone_number,
         place: place,
       };
-      // setLoading(true);
+      setLoading(true);
   
       try {
         const response = await axios.post(`${config.base_url}/api/v1/auth/create-company/`, formData, {
@@ -259,7 +275,10 @@ function Login() {
           //   description: 'Company created successfully. Password sent to your email.',
           //   variant: 'success',
           // });
-          toast("Password sent to your email.");
+          // toast("Password sent to your email.");
+          // alert("Password sent to your email.")
+          setAlertMessage("Password sent to your email.");
+          setAlertOpen(true);
           setIsJobProviderSignupOpen(false);
 
         } else {
@@ -268,22 +287,34 @@ function Login() {
           //   description: 'Registration failed. Try again!',
           //   variant: 'destructive',
           // });
-          toast.error("Registration failed. Try again!");
+          setAlertMessage("Registration failed. Try again!");
+          setAlertOpen(true);
+          // toast.error("Registration failed. Try again!");
         }
       } catch (error) {
         if (error.response) {
           const { status, data } = error.response;
           if (status === 400) {
-              toast.error(data.error || "User with this email already exists.");
+            setAlertMessage("User with this email already exists.");
+          setAlertOpen(true);
+              // toast.error(data.error || "User with this email already exists.");
           } else if (status === 500) {
-              toast.error("Server error. Please try again later.");
+            setAlertMessage("Server error. Please try again later.");
+          setAlertOpen(true);
+              // toast.error("Server error. Please try again later.");
           } else {
-              toast.error("An unexpected error occurred.");
+            setAlertMessage("An unexpected error occurred.");
+          setAlertOpen(true);
+              // toast.error("An unexpected error occurred.");
           }
       } else {
-          toast.error("Network error. Please check your connection.");
+        setAlertMessage("Network error. Please check your connection.");
+          setAlertOpen(true);
+          // toast.error("Network error. Please check your connection.");
       }
         console.error("Error during registration:", error);
+      }finally {
+        setLoading(false);
       }
     }
 
@@ -320,6 +351,8 @@ function Login() {
       setIsOpen(isDrawerOpen);
       if (!isDrawerOpen) navigate("/"); // Navigate to /candidate if the drawer is closed
     };
+    if (loading) return <BarLoader width={"100%"} color="#36d7b7" />;
+
   return (
     // <div>Login</div>
     <>
@@ -525,6 +558,23 @@ function Login() {
         </DrawerContent>
       </Drawer>
       {/* </ToastProvider> */}
+
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notification</AlertDialogTitle>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline">Close</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={() => setAlertOpen(false)}>Got it</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   )
 }

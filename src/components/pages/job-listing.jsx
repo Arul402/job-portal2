@@ -5,6 +5,8 @@ import { BarLoader } from "react-spinners";
 import JobCard from "../job-card";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
 import {
   Select,
   SelectContent,
@@ -129,12 +131,35 @@ const handleLocationFilterChange = (selectedLocation) => {
 
 
 
+// useEffect(() => {
+//   const showNotification = localStorage.getItem("show_notification");
+
+//   if (showNotification === "true") {
+//     // Show notification after a slight delay (2ms)
+//     const timer = setTimeout(() => {
+//       // alert("New jobs have been posted!");
+//       toast.info("New jobs have been posted!");
+
+//       // Clear the notification flag
+//       localStorage.removeItem("show_notification");
+//       sessionStorage.setItem("has_seen_badge", "false");
+//     }, 2);
+//     return () => clearTimeout(timer);
+// }
+// }, [token]);
+
+
+
   if (loading) {
     return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
   }
 
   return (
     <div className="">
+      <ToastContainer
+    theme="dark"
+    transition={Bounce}
+    />
       <h1 className="gradient-title font-extrabold text-6xl sm:text-7xl text-center pb-8">
         Latest Jobs
       </h1>

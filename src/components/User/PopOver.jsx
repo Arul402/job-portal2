@@ -260,7 +260,7 @@ function PopOver() {
         setProfile(profileResponse.data);
 
         if (userType === "company") {
-          const companyPhotoURL = `${config.base_url}${profileResponse.data.company_photo}`;
+          const companyPhotoURL = `${profileResponse.data.company_photo}`;
           setCompanyPhoto(companyPhotoURL);
           setUsername(profileResponse.data.company_name);
         } else {
@@ -310,8 +310,8 @@ function PopOver() {
           {userType === "company" ? (
             <img
               src={
-                Companyphoto 
-      ? Companyphoto 
+                Companyphoto ||  companyphoto
+      ? Companyphoto || companyphoto
       : PersonDefaultImg 
      }
               alt="Profile"
@@ -320,10 +320,13 @@ function PopOver() {
           )
           : userType === "candidate" ? (
             <img
-              src={userphotos 
-                ? userphotos || photo || PersonDefaultImg
-                : PersonDefaultImg 
-                }
+              // src={userphotos 
+              //   ? userphotos || photo || PersonDefaultImg
+              //   : PersonDefaultImg 
+              //   }
+              src={userphotos || photo ?
+                userphotos || photo :  PersonDefaultImg
+              }
               alt=" Profile"
               className="w-12 h-12 sm:w-16 sm:h-16 lg:w-12 lg:h-12 rounded-full top-5 right-2 sm:top-4 sm:right-4"
               

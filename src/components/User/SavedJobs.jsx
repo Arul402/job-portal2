@@ -7,12 +7,27 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "../ui/card
 import { Button } from "../ui/button";
 import BarLoader from "react-spinners/BarLoader";
 import { Heart } from "lucide-react";
+import { Bounce, ToastContainer, toast } from 'react-toastify';
+  import 'react-toastify/dist/ReactToastify.css';
+  import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+  } from "../ui/alert-dialog";
 
 function SavedJobs() {
   const [savedJobs, setSavedJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const token = sessionStorage.getItem("user_token");
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   // Fetch saved jobs on component mount
   useEffect(() => {
@@ -53,11 +68,35 @@ function SavedJobs() {
     }
   };
 
+
+  useEffect(() => {
+    const showNotification = localStorage.getItem("show_notification");
+
+    if (showNotification === "true") {
+      // Show notification after a slight delay (2ms)
+      const timer = setTimeout(() => {
+        // alert("New jobs have been posted!");
+        setAlertMessage("New jobs have been posted!");
+      setAlertOpen(true);
+        // toast.info("New jobs have been posted!");
+
+        // Clear the notification flag
+        localStorage.removeItem("show_notification");
+        sessionStorage.setItem("has_seen_badge", "false");
+      }, 5);
+      return () => clearTimeout(timer);
+  }
+}, [token]);
+
   if (loading) return <BarLoader width={"100%"} color="#36d7b7" />;
   if (error) return <p>{error}</p>;
 
   return (
     <div>
+      <ToastContainer
+    theme="dark"
+    transition={Bounce}
+    />
       <h1 className="gradient-title font-extrabold text-4xl sm:text-5xl text-center pb-8">
         Saved Jobs
       </h1>
@@ -98,6 +137,22 @@ function SavedJobs() {
           ))}
         </div>
       )}
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notification</AlertDialogTitle>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline">Close</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={() => setAlertOpen(false)}>Got it</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

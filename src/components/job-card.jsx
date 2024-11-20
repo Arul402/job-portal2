@@ -54,7 +54,7 @@ const JobCard = ({
 
     fetchSavedJobs();
   }, [job.id, token]);
-
+  
   
   
 

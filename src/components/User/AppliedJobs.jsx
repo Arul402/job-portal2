@@ -12,6 +12,17 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 import { BarLoader } from 'react-spinners';
 
 const AppliedJobs = () => {
@@ -19,6 +30,8 @@ const AppliedJobs = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const token = sessionStorage.getItem('user_token');
 
   // Helper to get and update the previous statuses from localStorage
@@ -83,6 +96,26 @@ const AppliedJobs = () => {
       navigate('/login');
     }
   }, [token]);
+
+  useEffect(() => {
+    const showNotification = localStorage.getItem("show_notification");
+
+    if (showNotification === "true") {
+      // Show notification after a slight delay (2ms)
+      const timer = setTimeout(() => {
+        // alert("New jobs have been posted!");
+        setAlertMessage("New jobs have been posted!");
+      setAlertOpen(true);
+        // toast.info("New jobs have been posted!");
+
+        // Clear the notification flag
+        localStorage.removeItem("show_notification");
+        sessionStorage.setItem("has_seen_badge", "false");
+      }, 2);
+      return () => clearTimeout(timer);
+  }
+}, [token]);
+
   if(loading){
     <BarLoader width="100%" color="#36d7b7" />
   }
@@ -141,6 +174,22 @@ const AppliedJobs = () => {
       theme="dark"
       transition={Bounce}
       />
+      <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notification</AlertDialogTitle>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline">Close</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={() => setAlertOpen(false)}>Got it</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };
