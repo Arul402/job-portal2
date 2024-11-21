@@ -69,8 +69,10 @@ const CompanyProfile = () => {
   };
 
   const fetchProfile = async () => {
+    
     try {
       if (token) {
+        setLoading(true);
         const response = await axios.get(`${config.base_url}/api/v1/app/manage-company-profile/`, {
           headers: {
             'Authorization': `Token ${token}`,
@@ -82,6 +84,8 @@ const CompanyProfile = () => {
       }
     } catch (error) {
       console.error('Error fetching company profile:', error);
+    }finally {
+      setLoading(false);
     }
   };
 
@@ -138,19 +142,19 @@ const CompanyProfile = () => {
     if (profile.company_photo) {
       sessionStorage.setItem("Companyphoto", profile.company_photo);
     }
-    if (token) {
+    
+  }, [profile]);
+  
+
+  useEffect(() => {
+  //   // if (token) {
       fetchProfile(); // Call fetchProfile only if the token exists
-    }
-  }, [token,profile]);
+  //   // }
+  }, [token]);
+
   if (loading) {
     return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
   }
-
-  // useEffect(() => {
-  //   if (token) {
-  //     fetchProfile(); // Call fetchProfile only if the token exists
-  //   }
-  // }, [token]);
   
 
   return (

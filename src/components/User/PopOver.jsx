@@ -52,34 +52,34 @@ function PopOver() {
     }
   }, []);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      if (token) {
-        try {
-          if (userType === "company") {
-            const response = await axios.get(`${config.base_url}/api/v1/app/manage-company-profile/`, {
-              headers: { 'Authorization': `Token ${token}` }
-            });
-            setProfile(response.data);
-            const companyPhotoURL = `${config.base_url}${response.data.company_photo}`;
-            setCompanyPhoto(companyPhotoURL);
-            setUsername(response.data.company_name);
-          } else {
-            const response = await axios.get(`${config.base_url}/api/v1/app/profile/`, {
-              headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'multipart/form-data' }
-            });
-            setProfile(response.data);
-            const userPhotoURL = `${config.base_url}${response.data.photo}`;
-            setPhoto(userPhotoURL);
-            setUsername(response.data.first_name);
-          }
-        } catch (error) {
-          console.error("Error fetching profile:", error);
-        }
-      }
-    };
-    fetchProfile();
-  }, [token, userType,photo,companyphoto]);
+  // useEffect(() => {
+  //   const fetchProfile = async () => {
+  //     if (token) {
+  //       try {
+  //         if (userType === "company") {
+  //           // const response = await axios.get(`${config.base_url}/api/v1/app/manage-company-profile/`, {
+  //           //   headers: { 'Authorization': `Token ${token}` }
+  //           // });
+  //           // setProfile(response.data);
+  //           // const companyPhotoURL = `${config.base_url}${response.data.company_photo}`;
+  //           // setCompanyPhoto(companyPhotoURL);
+  //           // setUsername(response.data.company_name);
+  //         } else {
+  //           const response = await axios.get(`${config.base_url}/api/v1/app/profile/`, {
+  //             headers: { 'Authorization': `Token ${token}`, 'Content-Type': 'multipart/form-data' }
+  //           });
+  //           setProfile(response.data);
+  //           const userPhotoURL = `${config.base_url}${response.data.photo}`;
+  //           setPhoto(userPhotoURL);
+  //           setUsername(response.data.first_name);
+  //         }
+  //       } catch (error) {
+  //         console.error("Error fetching profile:", error);
+  //       }
+  //     }
+  //   };
+  //   fetchProfile();
+  // }, [token, userType,photo,companyphoto]);
 
   // Fetch job details
   useEffect(() => {
