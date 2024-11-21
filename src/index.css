@@ -58,13 +58,39 @@
     --chart-5: 340 75% 55%;
   }
 }
+.wmde-markdown {
+  background-color: #0d1117 !important; 
+  color: #ffffff !important;
+}
 
 .wmde-markdown ul {
   list-style-type: disc;
   padding-left: 25px;
-  color: white;
-  /* background-color: #209bd8; */
+  color: #ffffff !important; 
+  background-color: #0d1117 !important; 
+  opacity: 0.9; 
+  border-radius: 4px; 
+  padding: 0px 0px 0px 32px !important; 
+  margin-top: 4px !important;
 }
+
+.wmde-markdown pre {
+  background-color: #161b22 !important; 
+  color: #c9d1d9 !important; 
+  font-size: 0.9rem; 
+}
+
+.wmde-markdown code {
+  background-color: #161b22 !important; 
+  color: #c9d1d9 !important; 
+  font-family: 'Courier New', Courier, monospace; 
+  padding: 16px; 
+}
+
+
+
+
+
 
 @layer base {
   * {

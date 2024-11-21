@@ -24,6 +24,7 @@ import {
   AlertDialogTrigger,
 } from "../ui/alert-dialog";
 import { BarLoader } from 'react-spinners';
+import { Briefcase, IndianRupee, MapPinIcon } from 'lucide-react';
 
 const AppliedJobs = () => {
   const [applications, setApplications] = useState([]);
@@ -60,6 +61,7 @@ const AppliedJobs = () => {
             : JSON.parse(application.skills.replace(/'/g, '"')),
         }));
         setApplications(applicationsData);
+        console.log(applications)
         setLoading(false);
 
         // Get the last known statuses from localStorage
@@ -116,6 +118,11 @@ const AppliedJobs = () => {
   }
 }, [token]);
 
+const formatDate = (dateString) => {
+  const options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+};
+
   if(loading){
     <BarLoader width="100%" color="#36d7b7" />
   }
@@ -135,7 +142,7 @@ const AppliedJobs = () => {
             <Card key={index} className="flex flex-col my-4 flex-wrap shadow-white transition-transform duration-300 delay-200 hover:scale-105 hover:shadow-none ">
               <CardHeader className="flex justify-between items-center">
                 <CardTitle className="font-bold flex justify-between w-full">
-                  {application.company}
+                  {application.title}
                   <div className={`badge ${
                     application.status === "accepted" ? "text-green-600" :
                     application.status === "rejected" ? "text-red-600" :
@@ -146,15 +153,32 @@ const AppliedJobs = () => {
                 </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
-                <div className="flex justify-end items-center">
+                {/* <div className="flex justify-end items-center">
                    {application.username}
+                </div> */}
+                
+                <div className="flex justify-between items-center">
+                   <h1 className='font-bold'>{application.company}</h1>
+                   {application.company_profile_photo && (
+                    <img src={`${config.base_url}${application.company_profile_photo}`} alt="Company Logo" className="h-6 w-10" />
+                  )}
+                   {/* {application.company_profile_photo} */}
                 </div>
                 <hr />
-                <div>Experience: {application.experience}</div>
-                <div>Education: {application.education}</div>
-                <div className="product-price">Skills: 
-                  {Array.isArray(application.skills) ? <div className='gap-2 '>{application.skills.join(',  ').toUpperCase()}</div> : 'No skills available'}
+                <div className='flex justify-between items-center'>Applied On: {formatDate(application.created_at)}</div>
+                <div className='flex justify-between items-center'><h1>Experience: {application.experience}</h1><div className='flex gap-2 items-center'><MapPinIcon size={10}/>{application.location.toUpperCase()}</div></div>
+                <div className='flex justify-between items-center'><h1>Education: {application.education}</h1><div className='flex gap-2 items-center'><Briefcase size={15} />  {application.employment_type.toUpperCase()}</div></div>
+                {/* <div>Education: {application.education}</div> */}
+                
+                <div className="product-price ">
+                  {Array.isArray(application.skills) ? <div className='  '> Skills: {application.skills.join(',  ').toUpperCase()}</div> : 'No skills available'}
                 </div>
+                <div className='flex justify-start gap-2 '>Salary:
+                  {/* <h1>Salary :</h1>  */}
+                  <div className='flex  items-center  text-yellow-200'> <IndianRupee size={15}/>
+                {application.salary}</div></div>
+                <hr />
+               
               </CardContent>
               <CardFooter className="flex gap-2">
                 <Button variant="secondary" className="flex-1">

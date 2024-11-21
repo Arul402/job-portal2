@@ -30,6 +30,7 @@ import { FaBuilding, FaLock } from "react-icons/fa";
 import BuildingImage from '../../assets/building.png'
 import LockImage from '../../assets/lock.png'
 import Editimage from '../../assets/skills.png'
+import { BarLoader } from "react-spinners";
 
 const CompanyProfile = () => {
   const [openSheet, setOpenSheet] = useState(null);
@@ -44,6 +45,7 @@ const CompanyProfile = () => {
     id: null,
   });
   const [photo, setPhoto] = useState();
+  // const [loading, setLoading] = useState(false);
   const [changes, setChanges] = useState({});
   const token = sessionStorage.getItem("user_token");
   const navigate = useNavigate();
@@ -136,11 +138,20 @@ const CompanyProfile = () => {
     if (profile.company_photo) {
       sessionStorage.setItem("Companyphoto", profile.company_photo);
     }
-  }, [profile]);
+    if (token) {
+      fetchProfile(); // Call fetchProfile only if the token exists
+    }
+  }, [token,profile]);
+  if (loading) {
+    return <BarLoader className="mb-4" width={"100%"} color="#36d7b7" />;
+  }
 
-  useEffect(() => {
-    fetchProfile();  // Only call fetchProfile once on component mount
-  }, [token]);
+  // useEffect(() => {
+  //   if (token) {
+  //     fetchProfile(); // Call fetchProfile only if the token exists
+  //   }
+  // }, [token]);
+  
 
   return (
     <div className="flex flex-wrap gap-4 justify-center">

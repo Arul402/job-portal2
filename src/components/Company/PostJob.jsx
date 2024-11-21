@@ -77,7 +77,7 @@ const PostJob = () => {
           const profilePhotoUrl = `${config.base_url}${fetchedProfile.company_photo}`;
           setCompanyPhoto(profilePhotoUrl);
           setProfile({ ...fetchedProfile, id: fetchedProfile.id });
-          console.log(fetchedProfile);
+          console.log(profile.company_name);
         }
       } catch (error) {
         console.error('Error fetching company profile:', error);
@@ -94,7 +94,13 @@ const PostJob = () => {
 
     const jobData = new FormData();
     jobData.append("title", title);
-    jobData.append("company", profile.company_name);
+    if(!profile.company_name){
+      alert("Enter the Company Name In Profile To Post The Job")
+      return navigate('/company-profile');
+    }else{
+      jobData.append("company", profile.company_name);
+    }
+    
     jobData.append("description", description);
     jobData.append("location", location);
     jobData.append("salary", parseFloat(salary));
