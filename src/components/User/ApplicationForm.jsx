@@ -61,8 +61,39 @@ const ApplicationForm = () => {
     fetchProfile();
   }, [token]);
 
+  const validateForm = () => {
+    if (!resume) {
+      setAlertMessage("Please upload your resume.");
+      setAlertOpen(true);
+      return false;
+    }
+    if (!coverLetter.trim()) {
+      setAlertMessage("Please provide a cover letter.");
+      setAlertOpen(true);
+      return false;
+    }
+    if (!profile.skills.trim()) {
+      setAlertMessage("Please enter your skills.");
+      setAlertOpen(true);
+      return false;
+    }
+    if (!profile.experience.trim()) {
+      setAlertMessage("Please enter your experience.");
+      setAlertOpen(true);
+      return false;
+    }
+    if (!profile.education.trim()) {
+      setAlertMessage("Please enter your education details.");
+      setAlertOpen(true);
+      return false;
+    }
+    return true;
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!validateForm()) return;
     setLoading(true);
     const formData = new FormData();
     formData.append("job", parseInt(id));

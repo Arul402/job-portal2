@@ -166,12 +166,12 @@ const formatDate = (dateString) => {
                 </div>
                 <hr />
                 <div className='flex justify-between items-center'>Applied On: {formatDate(application.created_at)}</div>
-                <div className='flex justify-between items-center'><h1>Experience: {application.experience}</h1><div className='flex gap-2 items-center'><MapPinIcon size={10}/>{application.location.toUpperCase()}</div></div>
-                <div className='flex justify-between items-center'><h1>Education: {application.education}</h1><div className='flex gap-2 items-center'><Briefcase size={15} />  {application.employment_type.toUpperCase()}</div></div>
+                <div className='flex justify-between items-center'><h1>Experience: {application.company_experience}</h1><div className='flex gap-2 items-center'><MapPinIcon size={10}/>{application.location.toUpperCase()}</div></div>
+                <div className='flex justify-between items-center'><div className='flex gap-2 items-center'><Briefcase size={15} />  {application.employment_type.toUpperCase()}</div></div>
                 {/* <div>Education: {application.education}</div> */}
                 
                 <div className="product-price ">
-                  {Array.isArray(application.skills) ? <div className='  '> Skills: {application.skills.join(',  ').toUpperCase()}</div> : 'No skills available'}
+                  {Array.isArray(application.company_skills) ? <div className='  '> Skills: {application.skills.join(',  ').toUpperCase()}</div> : 'No skills available'}
                 </div>
                 <div className='flex justify-start gap-2 '>Salary:
                   {/* <h1>Salary :</h1>  */}

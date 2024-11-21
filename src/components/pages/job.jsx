@@ -162,7 +162,12 @@ const JobPage = () => {
     <li  key={index}> {skill}</li>
   ))}
 </ul>
+<h2 className="text-2xl sm:text-3xl font-bold">Experience</h2>
+<div className="flex gap-2">
 
+<ul className="sm:text-lg list-disc pl-5"> <li >{job.experience}</li></ul>
+
+        </div>
       <h2 className="text-2xl sm:text-3xl font-bold">What we are looking for</h2>
       <MDEditor.Markdown source={job?.additional_details} className="bg-transparent sm:text-lg" />
       

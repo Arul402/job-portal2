@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetFooter, SheetHeader, SheetTitle } from "../ui/sheet"; // Imported Sheet components
@@ -10,11 +10,23 @@ import MDEditor from "@uiw/react-md-editor";
 import { BarLoader } from "react-spinners";
 import config from "../../functions/config";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from "../ui/Drawer";
 
 const PostJob = () => {
    const [title, setTitle] = useState("");
+   const [experience, setExperience] = useState("");
   const [description, setDescription] = useState("");
   const [location, setLocation] = useState("");
   const [salary, setSalary] = useState(50000.0);
@@ -22,7 +34,7 @@ const PostJob = () => {
   const [skills, setSkills] = useState([]);  // Updated to store skills as an array
   const [companyPhoto, setCompanyPhoto] = useState(null);
   const [additionalDetails, setAdditionalDetails] = useState(""); // New state for additional details
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [isSkillsDrawerOpen, setIsSkillsDrawerOpen] = useState(false); // State for skills drawer
   // const [isAdditionalDetailsDrawerOpen, setIsAdditionalDetailsDrawerOpen] = useState(false); // State for additional details drawer
   const [isAdditionalDetailsDrawerOpen, setIsAdditionalDetailsDrawerOpen] = useState(false);
@@ -30,7 +42,13 @@ const PostJob = () => {
   const [loading, setLoading] = useState(false);
   const [submissionStatus, setSubmissionStatus] = useState(null);
   const token = sessionStorage.getItem("user_token");
+  const [alertDisplayed, setAlertDisplayed] = useState(false);
+  const alertTriggered = useRef(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
   const navigate = useNavigate();
+  // const [count,setCount]=useState(0);
+  const isCalledOnce = useRef(false);
     const [profile, setProfile] = useState({
     company_name: '',
     company_photo: null,
@@ -88,6 +106,25 @@ const PostJob = () => {
   }, [token]);
 
 
+  const handleOpenSheet = () => {
+    const comp_name=sessionStorage.getItem("CompanyName")
+    if (!profile.company_name && ! comp_name) {
+      alert("Enter the Company Name In Profile To Post The Job");
+      navigate('/recruiter');
+    } else {
+      setIsOpen(true); // Open the sheet only if the condition is satisfied
+    }
+  };
+
+  useEffect(() => {
+    if (!isCalledOnce.current) {
+      handleOpenSheet(); // Call the function only once
+      isCalledOnce.current = true; // Mark as called
+    }
+  }, [token]);
+  
+
+
   const handleJobPost = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -102,6 +139,7 @@ const PostJob = () => {
     }
     
     jobData.append("description", description);
+    jobData.append("experience", experience);
     jobData.append("location", location);
     jobData.append("salary", parseFloat(salary));
     jobData.append("employment_type", employmentType);
@@ -159,6 +197,7 @@ const PostJob = () => {
             <Textarea placeholder="Job Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
             <Input placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} required />
             <Input type="number" placeholder="Salary" value={salary} onChange={(e) => setSalary(e.target.value)} required />
+            <Input  placeholder="Experience" value={experience} onChange={(e) => setExperience(e.target.value)} required />
             <div className="p-4 border-2">
             <h3>Company Logo</h3><br/>
             <Input type="file" accept="image/*" onChange={handleFileChange} className="w-full p-2" />
@@ -230,7 +269,22 @@ const PostJob = () => {
     </Sheet>
 
        
-    
+    <AlertDialog open={alertOpen} onOpenChange={setAlertOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Notification</AlertDialogTitle>
+            <AlertDialogDescription>{alertMessage}</AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel asChild>
+              <Button variant="outline">Close</Button>
+            </AlertDialogCancel>
+            <AlertDialogAction asChild>
+              <Button onClick={() => setAlertOpen(false)}>Got it</Button>
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     
      </div>
   );

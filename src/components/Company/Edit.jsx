@@ -25,7 +25,7 @@ const Edit = () => {
     const navigate = useNavigate();
     const token = sessionStorage.getItem("user_token");
     const [isOpen, setIsOpen] = useState(true);
-
+    const [experience, setExperience] = useState("");
     // State declarations
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
@@ -57,6 +57,7 @@ const Edit = () => {
           setEmploymentType(data.employment_type);
           setSkills(data.skills ? data.skills.join(", ") : "");
           setAdditionalDetails(data.additional_details || "");
+          setExperience(data.experience);
         } catch (err) {
           console.error('Error fetching job details:', err);
           setError('Unable to fetch job details.');
@@ -81,6 +82,7 @@ const Edit = () => {
         employment_type: employmentType,
         skills:skills.split(",").map(skill => skill.trim()).join(", "),
         additional_details: additionalDetails,
+        experience:experience
       };
 
       try {
@@ -127,7 +129,7 @@ const Edit = () => {
               <Textarea placeholder="Job Description" value={description} onChange={(e) => setDescription(e.target.value)} required />
               <Input placeholder="Location" value={location} onChange={(e) => setLocation(e.target.value)} required />
               <Input type="number" placeholder="Salary" value={salary} onChange={(e) => setSalary(e.target.value)} required />
-
+              <Input  placeholder="Experience" value={experience} onChange={(e) => setExperience(e.target.value)} required />
               <Select onValueChange={setEmploymentType} value={employmentType} required>
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="Select Employment Type" />

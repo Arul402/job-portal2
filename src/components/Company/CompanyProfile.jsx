@@ -31,6 +31,7 @@ import BuildingImage from '../../assets/building.png'
 import LockImage from '../../assets/lock.png'
 import Editimage from '../../assets/skills.png'
 import { BarLoader } from "react-spinners";
+import PersonDefaultImg from '../../assets/personimg.png'
 
 const CompanyProfile = () => {
   const [openSheet, setOpenSheet] = useState(null);
@@ -94,6 +95,20 @@ const CompanyProfile = () => {
     for (const key in changes) {
       formData.append(key, changes[key]);
     }
+    // for (const key in changes) {
+    //   if (key === "company_photo") {
+    //     if (changes[key]) {
+    //       // Add the company photo if present
+    //       formData.append(key, changes[key]);
+    //     } else {
+    //       // Add the default image if no company photo is provided
+    //       formData.append(key, PersonDefaultImg);
+    //     }
+    //   } else {
+    //     // Append other fields
+    //     formData.append(key, changes[key]);
+    //   }
+    // }
     setLoading(true);
     try {
       await axios.put(`${config.base_url}/api/v1/app/manage-company-profile/`, formData, {
@@ -141,6 +156,13 @@ const CompanyProfile = () => {
   useEffect(() => {
     if (profile.company_photo) {
       sessionStorage.setItem("Companyphoto", profile.company_photo);
+    }else{
+      sessionStorage.setItem("Companyphoto", PersonDefaultImg);
+    }
+    if (profile.company_name) {
+      sessionStorage.setItem("CompanyName", profile.company_name);
+    }else{
+      sessionStorage.removeItem("CompanyName");
     }
     
   }, [profile]);
@@ -339,6 +361,7 @@ const CompanyProfile = () => {
           type="file"
           accept="image/*"
           name="company_photo"
+          // value={PersonDefaultImg}
           onChange={handleFileChange}
         />
         {profile.company_photo && (
